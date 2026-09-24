@@ -2,6 +2,13 @@ pipeline {
     // agent specification
     agent any
 
+    // env variables -> shipped inside stages
+    environment {
+      // key='val', it also comes with many built-in vars like BUILD_NUMBER, used as ${env.BUILD_NUMBER}, even custom var as ${env.key}
+      backendImg = 'backend-img:' //eg backend-img:v1 ( if build no is 1)
+      frontendImg = 'frontend-img'
+    
+    }
     // stages specification - pipeline runs each stage
     stages {
       // 1. stage ("name") { steps{..} } - need paranthesis ("for writing stage name")
@@ -33,14 +40,50 @@ pipeline {
           // ** worked ** // 
 
           // 3. stage - dir verification if actually pulled right code - also we changed to clone desired repo other than where our jks file was 
-          stage ("k8s dir verfication") {
+          stage ("Source code verfication") {
             steps {
               // after cloning repo, it -> cd into cloned repo before entering next stage, so we are already inside repo which is being saved at
               // var//jenkins_home/workspace/jenkins-pipeline(ig). 
               sh 'ls -ltr'
-              sh 'ls | grep "backend"'
+              sh 'echo "verification is successfull!" '
             }
+          }
 
+          // 4. stage - build all images
+          stage ("Build Backend Image") {
+            steps {
+              // don't need to specify file for building image just need to provide dir path being . or ./else or -f for specifying the docker file
+              // note - must use double quotes for shell commands when used with variables for var interpolation
+              sh "docker build -f ./backend/dockerfile -t ${env.backendImg}:v${env.BUILD_NUMBER} ./backend"
+              sh 'docker image ls | grep backend'
+            }
+          } 
+
+          stage ("Build Frontend Image") {
+            steps {
+              // important - sh space_needed "" dble-quotes for injecting vars and recognition
+              sh "docker build -f ./frontend/dockerfile -t ${env.frontendImg}:v${env.BUILD_NUMBER} ./frontend"
+              sh 'docker image ls | grep frontend'
+            }
+          } 
+
+          // 5. stage - images cleanup  
+          stage ("Multiservices Images Cleanup") {
+            steps {
+              // triple quotes for multi line non-break sh
+              // single if non-var,double if var
+              sh """
+                docker rmi ${env.backendImg}:v${env.BUILD_NUMBER}
+                docker rmi ${env.frontendImg}:v${env.BUILD_NUMBER}
+              """
+            }
+          }
+
+          // 6. stage - built images post cleanup checkup 
+          stage ("Pipeline Cleanup check") {
+            steps {
+              sh 'docker image ls'
+            }
           }
       }
 
