@@ -35,8 +35,9 @@ pipeline {
           // 3. stage - dir verification if actually pulled right code - also we changed to clone desired repo other than where our jks file was 
           stage ("k8s dir verfication") {
             steps {
+              // after cloning repo, it -> cd into cloned repo before entering next stage, so we are already inside repo which is being saved at
+              // var//jenkins_home/workspace/jenkins-pipeline(ig). 
               sh '''
-              cd BLOG-WEB-GO-FS-APP
               sh ls | grep "backend"
             '''
             }
