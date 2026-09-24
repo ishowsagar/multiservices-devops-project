@@ -4,8 +4,8 @@ pipeline {
 
     // stages specification - pipeline runs each stage
     stages {
-      // 1. stage "name"
-        stage "clean start" {
+      // 1. stage ("name") { steps{..} } - need paranthesis ("for writing stage name")
+        stage ("clean start") {
             // what it will do as a job - steps {}
             steps {
               // sh - run these commands
@@ -15,7 +15,7 @@ pipeline {
           }
 
       // rest stage's
-        stage "checkout code from SCM" {
+        stage ("checkout code from SCM") {
             steps {
               // pulls source repo from github by using access token
                 git (
