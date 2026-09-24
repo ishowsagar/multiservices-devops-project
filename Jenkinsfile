@@ -24,7 +24,8 @@ pipeline {
                     // id in credentials is -> under which idName this secret would stored to ref in the jenkins file
                     // username is just github usrname
                     credentialsId: 'github-login-token-id', // must store this secret in jenkins first to pull repo
-                    url: 'git@github.com:ishowsagar/multiservices-devops-project.git'  // ssh pull format is => git@github.com:usr/repo.git tracker
+                    // https://github.com/usr/repo.git
+                    url: 'https://github.com/ishowsagar/multiservices-devops-project.git'  // ssh pull format is => git@github.com:usr/repo.git tracker
                 // no trailing (ending) comma before closing wrapper
                 )
               }
