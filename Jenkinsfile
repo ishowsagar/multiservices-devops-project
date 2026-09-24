@@ -38,6 +38,7 @@ pipeline {
               // after cloning repo, it -> cd into cloned repo before entering next stage, so we are already inside repo which is being saved at
               // var//jenkins_home/workspace/jenkins-pipeline(ig). 
               sh '''
+              ls -ltr
               ls | grep "backend"
             '''
             }
