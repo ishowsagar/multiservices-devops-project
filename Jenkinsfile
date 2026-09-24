@@ -22,7 +22,7 @@ pipeline {
                   // note - use commas to seperate key: 'val', pairs when defined horizontally same line but if wrapped then can be only used to seperate each line by putting comma in the end
                     branch: 'main',
                     credentialsId: 'pull-secret', // must store this secret in jenkins first to pull repo
-                    url: 'git@github.com/ishowsagar/multiservices-devops-project.git'  // ssh pull format is => git@github.com/usr/repo.git tracker
+                    url: 'git@github.com:ishowsagar/multiservices-devops-project.git'  // ssh pull format is => git@github.com:usr/repo.git tracker
                 // no trailing (ending) comma before closing wrapper
                 )
               }
