@@ -25,10 +25,22 @@ pipeline {
                     // username is just github usrname
                     credentialsId: 'github-login-token-id', // must store this secret in jenkins first to pull repo
                     // https://github.com/usr/repo.git
-                    url: 'https://github.com/ishowsagar/multiservices-devops-project.git'  // ssh pull format is => git@github.com:usr/repo.git tracker
+                    url: 'https://github.com/ishowsagar/BLOG-WEB-GO-FS-APP.git'  // ssh pull format is => git@github.com:usr/repo.git tracker
                 // no trailing (ending) comma before closing wrapper
                 )
               }
+          }
+          // ** worked ** // 
+
+          // 3. stage - dir verification if actually pulled right code - also we changed to clone desired repo other than where our jks file was 
+          stage ("k8s dir verfication") {
+            steps {
+              sh '''
+              cd BLOG-WEB-GO-FS-APP
+              sh ls | grep "backend"
+            '''
+            }
+
           }
       }
 
