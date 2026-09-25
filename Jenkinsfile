@@ -54,7 +54,7 @@ pipeline {
             steps {
               // don't need to specify file for building image just need to provide dir path being . or ./else or -f for specifying the docker file
               // note - must use double quotes for shell commands when used with variables for var interpolation
-              sh "docker build -f ./backend/dockerfile -t ${env.backendImg}:v${env.BUILD_NUMBER} ./backend"
+              sh "docker build -f ./Backend/dockerfile -t ${env.backendImg}:v${env.BUILD_NUMBER} ./Backend"
               sh 'docker image ls | grep backend'
             }
           } 
