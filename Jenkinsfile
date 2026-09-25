@@ -5,7 +5,7 @@ pipeline {
     // env variables -> shipped inside stages
     environment {
       // key='val', it also comes with many built-in vars like BUILD_NUMBER, used as ${env.BUILD_NUMBER}, even custom var as ${env.key}
-      backendImg = 'backend-img:' //eg backend-img:v1 ( if build no is 1)
+      backendImg = 'backend-img' //eg backend-img:v1 ( if build no is 1)
       frontendImg = 'frontend-img'
     
     }
