@@ -84,7 +84,41 @@ pipeline {
             steps {
               sh 'docker image ls'
             }
+            // failure{} success{} -> post blocks inside stages
           }
       }
 
-  }
+// When pipeline fails mid stages, we would want to perform some actions to do cleanup which is neccessary to prevent resources creation or anything that
+//  should be destroyed if pipe fails mid stages.
+
+//  Post block -> runs after pipeline finishes ( does not matter how it finished) - but stays inside the pipeline block to actually run it
+  Post{
+    // always (subBlock) run always no matter what caused it to end 
+    // we can also add these blocks inside any stage to specifically target based action performance.
+    always {
+      echo 'pipeline finished;cleaning workspace...'
+      cleanWs()
+
+    }
+
+    // success .... only when pipeline succeeds
+    success {
+      echo 'pipeline goal accomplished! succeed'
+    }
+
+    // ctrl+d for instances selection
+    // failure ... when pipeline fails at any stage before completion ( this is what we wanted - run something when it fails)
+    failure {
+      echo 'pipeline hit rock! broke mid stage'
+      sh """ 
+      docker rmi ${env.backendImg}:v${env.BUILD_NUMBER} || true
+      docker rmi ${env.frontendImg}:v${env.BUILD_NUMBER} || true
+      echo 'application images deleted;reverted to clean state.'
+      """
+    }
+
+    // unstable,aborted.... cover when needed
+
+  }// post ends....
+
+}// pipeline ends...
