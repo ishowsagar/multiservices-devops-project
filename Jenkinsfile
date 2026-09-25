@@ -62,7 +62,7 @@ pipeline {
           stage ("Build Frontend Image") {
             steps {
               // important - sh space_needed "" dble-quotes for injecting vars and recognition
-              sh "docker build -f ./frontend/dockerfile -t ${env.frontendImg}:v${env.BUILD_NUMBER} ./frontend"
+              sh "docker build -f ./frontend/instagram-clone-site/dockerfile -t ${env.frontendImg}:v${env.BUILD_NUMBER} ./frontend/instagram-clone-site"
               sh 'docker image ls | grep frontend'
             }
           } 
