@@ -92,7 +92,7 @@ pipeline {
 //  should be destroyed if pipe fails mid stages.
 
 //  Post block -> runs after pipeline finishes ( does not matter how it finished) - but stays inside the pipeline block to actually run it
-  Post{
+  post{
     // always (subBlock) run always no matter what caused it to end 
     // we can also add these blocks inside any stage to specifically target based action performance.
     always {
